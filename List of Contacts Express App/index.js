@@ -14,6 +14,12 @@ app.get('/', function(req, res){
     return res.render('home', {title: "This is the title"});
 });
 
+app.get('/practice', function(req,res){
+    return res.render('practice', {
+        title: "Playing with ejs"
+    });
+});
+
 app.listen(port, function(err){
     if (err) { console.log('Error in running the server', err);}
 
