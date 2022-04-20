@@ -11,7 +11,7 @@ app.get('/', function(req, res){
     // console.log(__dirname)
     // res.send("<h1>Running</h1>");
 
-    return res.render('home');
+    return res.render('home', {title: "This is the title"});
 });
 
 app.listen(port, function(err){
