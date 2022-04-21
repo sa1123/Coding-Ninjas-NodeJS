@@ -1,13 +1,24 @@
 <html>
 <head>
     <title>
-        <%= title %>
+        <%= locals.title %>
     </title>
 </head>
 
 <body>
 
-    <h1>From Eejs</h1>
+    <h1>Contacts List</h1>
+
+    <div>
+        <ul>
+            <% for (let i of contact_list) { %>
+                <li>
+                    <p><%= i.name %></p>
+                    <p><%= i.phone %></p>
+                </li>
+            <% } %>
+        </ul>
+    </div>
 
 </body>
 
