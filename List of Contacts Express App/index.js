@@ -33,6 +33,10 @@ app.get('/practice', function(req, res){
     });
 });
 
+app.post('/create-contact', function(req, res){
+    return res.redirect('/');
+});
+
 app.listen(port, function(err){
     if (err) { console.log('Error in running the server', err);}
 
