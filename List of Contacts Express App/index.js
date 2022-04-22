@@ -1,8 +1,11 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const port = 8000;
 
 const app = express();
+
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -34,6 +37,10 @@ app.get('/practice', function(req, res){
 });
 
 app.post('/create-contact', function(req, res){
+    contactList.push({
+        name: req.body.name,
+        phone: req.body.phone
+    });
     return res.redirect('/');
 });
 
