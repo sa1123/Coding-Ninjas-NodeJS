@@ -6,20 +6,12 @@ const port = 8000;
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static('assets'));
+app.use(express.static(path.join(__dirname, 'assets')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 var contactList = [
-    {
-        name: "A",
-        phone: "1"
-    },
-    {
-        name: "B",
-        phone: "2"
-    }
 ]
 
 app.get('/', function(req, res){
@@ -45,6 +37,22 @@ app.post('/create-contact', function(req, res){
     // });
 
     contactList.push(req.body);
+
+    return res.redirect('back');
+});
+
+app.get('/delete-contact/', function(req, res){
+    let phone = req.query.phone;
+
+    console.log(phone);
+
+    let contactIndex = contactList.findIndex(contact => contact.phone == phone);
+
+    console.log(contactIndex);
+
+    if (contactIndex != -1){
+        contactList.splice(contactIndex, 1);
+    }
 
     return res.redirect('back');
 });
