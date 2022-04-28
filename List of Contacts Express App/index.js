@@ -39,9 +39,20 @@ app.post('/create-contact', function(req, res){
     //     phone: req.body.phone
     // });
 
-    contactList.push(req.body);
+    // contactList.push(req.body);
+    Contact.create({
+        name: req.body.name,
+        phone: req.body.phone
+    }, function(err, newContact){
+        if (err){console.log('error in creating contact');
+        return;}
 
-    return res.redirect('back');
+        console.log(newContact);
+
+        return res.redirect('back');
+    });
+
+    // return res.redirect('back');
 });
 
 app.get('/delete-contact/', function(req, res){
