@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const port = 8000;
 
 const db = require('./config/mongoose');
-const Contact = require('./models/contact')
+const Contact = require('./models/contact');
 
 const app = express();
 
@@ -17,62 +17,67 @@ app.set('views', path.join(__dirname, 'views'));
 var contactList = [
 ]
 
-app.get('/', function(req, res){
-    // console.log(__dirname)
-    // res.send("<h1>Running</h1>");
-    return res.render('home', {
-        title: "Contacts list",
-        contact_list: contactList
-    });
-});
-
 app.get('/practice', function(req, res){
     return res.render('practice', {
         title: "Playing with ejs"
     });
 });
 
+
+app.get('/', function(req, res){
+
+
+    Contact.find({}, function(err, contacts){
+        if(err){
+            console.log('error in fetching contacts');
+            return;
+        }
+        return res.render('home',{
+            title: "Contact List",
+            contact_list: contacts
+        });
+
+    });
+
+});
+
 app.post('/create-contact', function(req, res){
 
-    // contactList.push({
-    //     name: req.body.name,
-    //     phone: req.body.phone
-    // });
 
-    // contactList.push(req.body);
     Contact.create({
         name: req.body.name,
         phone: req.body.phone
     }, function(err, newContact){
-        if (err){console.log('error in creating contact');
-        return;}
+        if (err){
+            console.log('error in creating contact');
+            return;
+        }
 
         console.log(newContact);
 
         return res.redirect('back');
     });
 
-    // return res.redirect('back');
-});
-
-app.get('/delete-contact/', function(req, res){
-    let phone = req.query.phone;
-
-    console.log(phone);
-
-    let contactIndex = contactList.findIndex(contact => contact.phone == phone);
-
-    console.log(contactIndex);
-
-    if (contactIndex != -1){
-        contactList.splice(contactIndex, 1);
-    }
-
-    return res.redirect('back');
 });
 
 app.listen(port, function(err){
-    if (err) { console.log('Error in running the server', err);}
+    if (err) { 
+        console.log('Error in running the server', err);
+    }
+    console.log('Running on:', port);
+});
 
-    console.log('Running on:', port)
+app.get('/delete-contact/', function(req, res){
+    console.log(req.query);
+    let id = req.query.id;
+
+    Contact.findByIdAndDelete(id, function(err){
+        if(err){
+            console.log("Error in deletion");
+            return;
+        }
+        return res.redirect('back');
+    });
+
+    
 });
